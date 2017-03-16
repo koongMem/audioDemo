@@ -1,0 +1,270 @@
+@import "common/fn";
+@import "common/reset";
+
+@-webkit-keyframes turnAround{
+    100%{
+        -webkit-transform:rotate(360deg);
+    }
+}
+@-moz-keyframes turnAround{ 
+    100%{
+        -moz-transform:rotate(360deg);
+    }
+} 
+@-ms-keyframes turnAround{ 
+    100%{
+        -ms-transform:rotate(360deg);
+    } 
+} 
+@-o-keyframes turnAround{ 
+    100%{
+        -o-transform:rotate(360deg);
+    }
+} 
+@keyframes turnAround{ 
+    100%{
+        transform:rotate(360deg);
+    } 
+}
+.title{
+    margin-top: rem(25);
+    @include font(#333, rem(36));
+}
+.border-top{
+    border-top-left-radius: rem(20);
+    border-top-right-radius: rem(20);
+}
+.border-bottom{
+    border-bottom-left-radius: rem(20);
+    border-bottom-right-radius: rem(20);
+}
+.border-radius{
+    border-radius: rem(20);
+}
+.box-shadow{
+    box-shadow: 0 0 15px 0px rgba(0,0,0,0.2);
+}
+.transition{
+    transition: transform .3s linear;
+    -moz-transition: -moz-transform .3s linear;  /* Firefox 4 */
+    -webkit-transition: -webkit-transform .3s linear;   /* Safari 和 Chrome */
+    -o-transition: -o-transform .3s linear;    /* Opera */
+}
+
+.audio-box{
+    margin: rem(20) 0;
+    padding: rem(20);
+    border-radius: rem(60);
+    line-height: 3.2;
+    @include font(#999, rem(24));
+    border: 1px solid #dbdbdb;
+    background: #f7f7f7;
+    .a-status{
+        border: none;
+        border-radius: rem(40);
+    }
+    .a-curtime{
+        margin: 0 rem(20);
+    }
+    .a-progress{
+        position: relative;
+        margin-top: 18px;
+        // height: rem(4);
+        border-top: rem(4) solid #d4d4d4;
+        margin-right: rem(30);  
+        // background-color: #d4d4d4;
+        .a-p-cur{
+            position: absolute;
+            top: -(rem(4));
+            height: 100%;
+            // background-color: #37c09a;
+            border-top: rem(4) solid #37c09a;
+        }
+        .a-p-progress{
+            background: #37c09a;
+            border: none;
+            width: rem(20);
+            height: rem(20);
+            position: absolute;
+            border-radius: rem(20);
+            top: -6px;
+        }
+    }
+    &:not(.playing):not(.loading){
+        .a-status{
+            @include sprite('icons', 'audioPlay');
+            &.active{
+                @include sprite('icons', 'audioPlayA');
+            }
+        }
+    }
+    &.loading{
+        .a-status{
+            @include sprite('icons', 'videoLoading');
+            border: none;
+            background-color: transparent;
+            -webkit-animation: turnAround 1s linear infinite;
+            -moz-animation: turnAround 1s linear infinite; 
+            -ms-animation: turnAround 1s linear infinite; 
+            -o-animation: turnAround 1s linear infinite; 
+            animation: turnAround 1s linear infinite;
+            margin: 6px 6px 5px 5px;
+        }
+    }
+    &.playing{
+        .a-status{
+            @include sprite('icons', 'audioPause');
+            &.active{
+                @include sprite('icons', 'audioPauseA');
+            }
+        }
+    }
+}
+.video-box{
+    float: left;
+    .v-title{
+        @extend .title
+    }
+    .v-container{
+        position: absolute;
+        top: 50%;
+        left: rem(25);
+        right: rem(25);
+        margin-top: -30%;
+        overflow: hidden;
+        .v-c-icon{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -20px;
+            margin-top: -20px;
+            opacity: 1;
+            &.active{
+                opacity: .5;
+            }
+        }
+    }
+    .v-progress{
+        position: absolute;
+        bottom: -40px;
+        left: 0;
+        right: 0;
+        padding: rem(24);
+        background-color: rgba(0,0,0, .4);
+        @include font(#fff, rem(24));
+        line-height: 1.4;
+        transition: bottom .6s;
+        -moz-transition: bottom .6s;  /* Firefox 4 */
+        -webkit-transition: bottom .6s;   /* Safari 和 Chrome */
+        -o-transition: bottom .6s;    /* Opera */
+        .v-p-status{
+            position: relative;
+            background: transparent;
+            border: 0;
+            width: rem(30);
+            height: rem(30);
+            
+        }
+        .v-p-curtime{
+            margin: 0 rem(20);
+        }
+        .v-p-progress{
+            position: relative;
+            margin-top: 7px;
+            height: rem(4);
+            margin-right: rem(30);
+            background-color: rgba(255, 255, 255, .5);
+            .p-p-cur{
+                position: absolute;
+                top: 0;
+                height: 100%;
+                background-color: #fff;
+            }
+            .p-p-btn{
+                background: #fff;
+                border: none;
+                width: rem(20);
+                height: rem(20);
+                position: absolute;
+                border-radius: rem(20);
+                top: -4px;
+            }
+        }
+    }
+    &:not(.pending):not(.end):not(.loading){
+       .v-progress{
+            bottom: 0;
+       }
+    }
+    &:not(.pending):not(.loading){
+        .v-container{
+            .v-c-icon{
+                display: none;
+            }
+        }
+    }
+    &.playing{
+        .v-progress{
+            .v-p-status{
+                &:after, &:before{
+                    content: "";
+                    display: block;
+                    background-color: #fff;
+                    height: 100%;
+                    width: rem(8);
+                    border-radius: rem(10);
+                }
+                &:after{
+                    float: right;
+                }
+                &:before{
+                    float: left;
+                }
+            }
+        }
+        
+    }
+    &.ready, &.pause{
+        .v-progress{
+            .v-p-status{
+                width:0;
+                height:0;
+                border-top: 8px solid transparent;
+                border-bottom: 8px solid transparent;
+                border-left: 15px solid #fff;
+            }
+        }
+    }
+    &.pending{
+        .v-container{
+            .v-c-icon{
+                padding: 20px;
+                @include sprite('icons', 'videoBegin');
+                background-color: rgba(0,0,0, .4);
+                border: 1px solid #fff;
+                border-radius: 20px;
+            }
+        }
+        
+    }
+    &.loading{
+        .v-container{
+            .v-c-icon{
+                @include sprite('icons', 'videoLoading');
+                border: none;
+                background-color: transparent;
+                -webkit-animation: turnAround 1s linear infinite;
+                -moz-animation: turnAround 1s linear infinite; 
+                -ms-animation: turnAround 1s linear infinite; 
+                -o-animation: turnAround 1s linear infinite; 
+                animation: turnAround 1s linear infinite;
+                background-size: 200px 608px;
+            }
+        }
+    }
+    &.pause{
+        .v-container{
+            
+        }
+    }
+}

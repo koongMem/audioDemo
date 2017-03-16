@@ -1,0 +1,125 @@
+/* clear float */
+@import "media";
+
+@mixin clearfix() {
+  &:after {
+    content: "";
+    height: 0;
+    font-size: 0;
+    display: block;
+    visibility: hidden;
+    clear: both;
+  }
+  zoom: 1;
+}
+
+/* set font style */
+
+$yahei: "Microsoft Yahei";
+$song: "simsun";
+@mixin font($color, $fontSize:14px, $font:null) {
+  @if $color and type_of($color)=="color" {
+    color: $color;
+  }
+  @if $font {
+    font-family: $font;
+  }
+  font-size: $fontSize;
+}
+
+/**
+ * px -> em
+ * @param  {[type]} $size px size
+ * @return {[type]}       em size
+ */
+
+@function rem($size) {
+  $remSize: ($size/2)/14;
+  @return #{$remSize}rem;
+}
+
+/**
+ * sprite icon
+ * @param  {[type]} $sprite   [iconName]
+ * @param  {[type]} $path       [description]
+ * @param  {[type]} $retinaPath [description]
+ * @return {[type]}             [description]
+ */
+
+//noinspection ALL
+@mixin sprite($path, $sprite) {
+  $icons: sprite-map($path+"/*.png", $layout: smart);
+  // $icons-2x:sprite-map($path+"/*.png", $layout: smart);
+  background-image: sprite-url($icons);
+  background-size: (image-width(sprite-path($icons)) / 2) (image-height(sprite-path($icons)) / 2);
+  background-position: round(nth(sprite-position($icons, $sprite), 1) / 2) round(nth(sprite-position($icons, $sprite), 2) / 2);
+  // background-position: sprite-position($icons, $sprite);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  display: inline-block;
+  height: floor(image-height(sprite-file($icons, $sprite)) / 2);
+  width: floor(image-width(sprite-file($icons, $sprite)) / 2);
+  // height: image-height(sprite-file($icons, $sprite));
+  // width: image-width(sprite-file($icons, $sprite));
+  // @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+  //     background-image: sprite-url($icons-2x);
+  //     background-size: (image-width(sprite-path($icons-2x)) / 2) (image-height(sprite-path($icons-2x)) / 2);
+  //     background-position: round(nth(sprite-position($icons-2x, $sprite), 1) / 2) round(nth(sprite-position($icons-2x, $sprite), 2) / 2);
+  //     height: image-height(sprite-file($icons-2x, $sprite)) / 2;
+  //     width: image-width(sprite-file($icons-2x, $sprite)) / 2;
+  // }
+}
+
+//noinspection ALL
+@mixin sprite-position($path, $sprite) {
+  $icons: sprite-map($path+"/*.png", $layout: smart);
+  background-position: round(nth(sprite-position($icons, $sprite), 1) / 2) round(nth(sprite-position($icons, $sprite), 2) / 2);
+  height: image-height(sprite-file($icons, $sprite))/2;
+  width: image-width(sprite-file($icons, $sprite))/2;
+}
+
+/**
+ * 1px border
+ */
+
+@mixin border1px($color,$position:after) {
+  @include pixel-ration(1) {
+    border-bottom: 1px solid $color;
+  }
+  @include pixel-ration(2) {
+    position: relative;
+    border: none;
+    &:#{$position} {
+      visibility: visible;
+      content: '';
+      //position: absolute;
+      display: block;
+      left: 0;
+      background: $color;
+      width: 100%;
+      height: 1px;
+      -webkit-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0;
+    }
+  }
+  @include pixel-ration(3) {
+    position: relative;
+    border: none;
+    &:#{$position} {
+      visibility: visible;
+      content: '';
+      //position: absolute;
+      display: block;
+      left: 0;
+      background: $color;
+      width: 100%;
+      height: 1px;
+      -webkit-transform: scaleY(0.33);
+      transform: scaleY(0.33);
+      -webkit-transform-origin: 0 0;
+      transform-origin: 0 0;
+    }
+  }
+}
