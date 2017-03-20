@@ -7,3 +7,4 @@
 (PS：如果touchmove监听是含有滚动事件的，event.preventDefault()在touchstar取消默认行为会导致滚动事件也被取消，解决办法暂时是监控4.0-4.4版本下模拟滚动)
 ## 2、aac出现手机不支持等情况，自带播放器不支持格式，导致获取 audio.currentTime 的永远处于0
 ## 3、vivio等手机出现获取 audio.duration 时一开始会先得到一个100或者0的数值之后才得到正确的时间值
+## WTF 客户端开启debug模式的vivo手机 加载audio时候会闪退~
